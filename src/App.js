@@ -11,8 +11,8 @@ import {
 
 // Define constants
 const axios = require('axios').default;
-const authorization_key = "uap-c1ffbff4db954ddcb050c6af0b43ba56-41193b64";
-const url = "https://development-api.uizadev.io/api/v5/live/entities";
+const authorization_key = "uap-9fc1b6221f7b4f358fdd258bd0ed742f-8b56c154";
+const url = "https://api.uiza.sh/v1/live_entities";
 const default_headers = {
   "Content-Type": "application/json",
   "Authorization": authorization_key
@@ -80,8 +80,8 @@ class ViewerPage extends Component {
         streams.push({
           // stream.online will be set as true if its online.
           online: element.broadcast === 'online' ? true : false,
-          stream_url: element.ingest.stream_url,
-          stream_key: element.ingest.stream_key,
+          stream_url: element.ingest.url,
+          stream_key: element.ingest.key,
           playback_url: element.playback.hls
         })
       } catch (err) { }
@@ -135,7 +135,7 @@ class BroadcastPage extends Component {
   //  Set the deafult state.
   state = {
     message: '',
-    region_value: 'asia-southeast-1',
+    region_value: 'in-bangalore-1',
     broadcast_url: '',
     broadcast_key: ''
   };
@@ -201,8 +201,8 @@ class BroadcastPage extends Component {
         var response = await axios(broadcast_polling_options);
         if (response.data.status === "ready") {
           self.setState({ message: "Stream is now ready" });
-          self.setState({ broadcast_url: "URL: " + response.data.ingest.stream_url });
-          self.setState({ broadcast_key: "Key: " + response.data.ingest.stream_key });
+          self.setState({ broadcast_url: "URL: " + response.data.ingest.url });
+          self.setState({ broadcast_key: "Key: " + response.data.ingest.key });
 
           // We have what we need clear the interval.
           clearInterval(poll_interval);
@@ -227,9 +227,8 @@ class BroadcastPage extends Component {
             <p> Start broadcast <br />
               <label>Pick your region: &nbsp;
               <select value={this.state.region_value} onChange={(event) => { this.setState({ region_value: event.target.value }); }}>
-                  <option value="asia-southeast-1">asia-southeast-1</option>
-                  <option value="do-bangalore-1">do-bangalore-1</option>
-                  <option value="asia-south-1">asia-south-1</option>
+                  <option value="in-bangalore-1">in-bangalore-1</option>
+                  <option value="in-mumbai-1">in-mumbai-1</option>
                 </select>
               </label> &nbsp;
             <button onClick={this.start_broadcast}>Start broadcast</button> <br />
